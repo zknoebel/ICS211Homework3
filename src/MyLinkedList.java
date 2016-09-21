@@ -1,3 +1,4 @@
+import java.util.Comparator;
 
 public class MyLinkedList<E> implements List211<E> {
 
@@ -5,7 +6,14 @@ public class MyLinkedList<E> implements List211<E> {
     // TODO
   }
   
-  
+  private class DLinkedNode<E>{
+    
+    DLinkedNode(){
+      
+    }
+    
+    
+  }
 
   private DLinkedNode<E> head;
   private DLinkedNode<E> tail;
