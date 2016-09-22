@@ -87,7 +87,7 @@ public class MyLinkedList<E> implements List211<E> {
 
   public void selectionSort(Comparator<? super E> compare){
 
-    DLinkedNode[] data = new DLinkedNode[size];
+    DLinkedNode<E>[] data = new DLinkedNode[size];
     
     temp = head;
     for(int d = 0; d < size; d ++){
@@ -118,8 +118,9 @@ public class MyLinkedList<E> implements List211<E> {
     
     temp = head;
     
-    for (int i = 0; i < size; i ++){
-      add()
+    for(int i = 0; i < size; i ++){
+    	temp.data = (E)data[i].data;
+    	temp = temp.next;
     }
   }
 
@@ -137,7 +138,8 @@ public class MyLinkedList<E> implements List211<E> {
     n.prev = tail;
     tail.next = n;
     tail = n;
-
+    
+    
     size ++;
 
     return true;
