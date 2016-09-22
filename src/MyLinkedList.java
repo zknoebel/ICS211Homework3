@@ -7,6 +7,7 @@ public class MyLinkedList<E> implements List211<E> {
   private DLinkedNode<E> tail;
   private DLinkedNode<E> temp;
   private E tempData;
+  private int placeHolder;
   private int size = 0;
 
 
@@ -30,18 +31,23 @@ public class MyLinkedList<E> implements List211<E> {
   public void insertionSort(Comparator<? super E> compare){
 
 
+    temp = head;
+    
     for (int i = 0; i < size - 1; i++) {
+      
+      temp = temp.next;
 
-      placeHolder = i;
+      while (compare.compare(temp.prev.data, temp.data) > 0) {
 
-      while (compare.compare(data[placeHolder], data[placeHolder + 1]) > 0) {
+        temp.next.prev = temp.prev;
+        temp.prev.next = temp.next;
+        temp.next = temp.prev;
+        temp.prev.prev.next = temp;
+        temp.prev = temp.prev.prev;
+        temp.next.prev = temp;
 
-        e = data[placeHolder];
-        data[placeHolder] = data[placeHolder + 1];
-        data[placeHolder + 1] = e;
-
-        if (placeHolder > 0) {
-          placeHolder--;
+        if (temp.prev.prev != null && !temp.prev.prev.equals(tail)) {
+          temp = temp.prev;
         }
       }
     }
@@ -81,22 +87,39 @@ public class MyLinkedList<E> implements List211<E> {
 
   public void selectionSort(Comparator<? super E> compare){
 
+    DLinkedNode[] data = new DLinkedNode[size];
+    
+    temp = head;
+    for(int d = 0; d < size; d ++){
+     
+      data[d] = temp;
+      temp = temp.next;
+    }
+    
+    
+
     for (int i = 0; i < size - 1; i++) {
 
-      e = data[i];
+      temp = data[i];
       placeHolder = i;
 
       for (int j = i; j < size; j++) {
 
-        if (compare.compare(e, data[j]) > 0) {
+        if (compare.compare(temp.data, (E)data[j].data) > 0) {
 
-          e = data[j];
+          temp = data[j];
           placeHolder = j;
         }
       }
 
       data[placeHolder] = data[i];
-      data[i] = e;
+      data[i] = temp;
+    }
+    
+    temp = head;
+    
+    for (int i = 0; i < size; i ++){
+      add()
     }
   }
 
