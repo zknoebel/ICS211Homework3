@@ -27,84 +27,6 @@ public class MyLinkedList<E> implements List211<E> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public void insertionSort(Comparator<? super E> comp) {
-
-		makeArray();
-
-		for (int i = 0; i < size - 1; i++) {
-
-			placeHolder = i;
-
-			while (comp.compare((E) dataArray[placeHolder], (E) dataArray[placeHolder + 1]) > 0) {
-
-				tempData = (E) dataArray[placeHolder];
-				dataArray[placeHolder] = dataArray[placeHolder + 1];
-				dataArray[placeHolder + 1] = tempData;
-
-				if (placeHolder > 0) {
-					placeHolder--;
-				}
-			}
-		}
-		
-		arrayToList();
-	}
-
-	public void bubbleSort(Comparator<? super E> comp) {
-
-		for (int i = 0; i < size - 1; i++) {
-
-			finished = true;
-			temp = head;
-
-			for (int j = 0; j < size - 1 - i; j++) {
-
-				if (comp.compare(temp.data, temp.next.data) > 0) {
-
-					finished = false;
-
-					tempData = temp.data;
-					temp.data = temp.next.data;
-					temp.next.data = tempData;
-
-				}
-
-				temp = temp.next;
-			}
-
-			if (finished == true) {
-				break;
-			}
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public void selectionSort(Comparator<? super E> comp) {
-
-		makeArray();
-
-		for (int i = 0; i < size - 1; i++) {
-
-			tempData = (E) dataArray[i];
-			placeHolder = i;
-
-			for (int j = i; j < size; j++) {
-
-				if (comp.compare(tempData, (E) dataArray[j]) > 0) {
-
-					tempData = (E) dataArray[j];
-					placeHolder = j;
-				}
-			}
-
-			dataArray[placeHolder] = dataArray[i];
-			dataArray[i] = tempData;
-		}
-		
-		arrayToList();
-	}
-
 	@Override
 	public boolean add(E e) {
 
@@ -163,17 +85,55 @@ public class MyLinkedList<E> implements List211<E> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void arrayToList(){
-		
+	public void addCycle(int cycleTo) {
+
 		temp = head;
-		
-		for(int i = 0; i < size; i++){
-			temp.data = (E)dataArray[i];
+
+		for (int i = 0; i < cycleTo; i++) {
+			temp = temp.next;
+		}
+		tail.next = temp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void arrayToList() {
+
+		temp = head;
+
+		for (int i = 0; i < size; i++) {
+			temp.data = (E) dataArray[i];
 			temp = temp.next;
 		}
 	}
-	
+
+	public void bubbleSort(Comparator<? super E> comp) {
+
+		for (int i = 0; i < size - 1; i++) {
+
+			finished = true;
+			temp = head;
+
+			for (int j = 0; j < size - 1 - i; j++) {
+
+				if (comp.compare(temp.data, temp.next.data) > 0) {
+
+					finished = false;
+
+					tempData = temp.data;
+					temp.data = temp.next.data;
+					temp.next.data = tempData;
+
+				}
+
+				temp = temp.next;
+			}
+
+			if (finished == true) {
+				break;
+			}
+		}
+	}
+
 	public void checkIndex(int index) {
 
 		if (index < 0 || index >= size) {
@@ -194,6 +154,66 @@ public class MyLinkedList<E> implements List211<E> {
 		}
 
 		return temp.data;
+	}
+
+	public boolean hasCycle() {
+
+		DLinkedNode<E> tortoise = head;
+		DLinkedNode<E> hare = head.next;
+
+		try {
+			while (true) {
+
+				if (tortoise.equals(hare)) {
+					return true;
+				}
+
+				tortoise = tortoise.next;
+				hare = hare.next.next;
+			}
+		} catch (NullPointerException e) {
+			return false;
+		}
+
+	}
+
+	public int indexOf(Object obj) {
+
+		temp = head;
+
+		for (int i = 0; i < size; i++) {
+
+			if (obj.equals(temp.data)) {
+				return i;
+			}
+			temp = temp.next;
+		}
+
+		return -1;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void insertionSort(Comparator<? super E> comp) {
+
+		makeArray();
+
+		for (int i = 0; i < size - 1; i++) {
+
+			placeHolder = i;
+
+			while (comp.compare((E) dataArray[placeHolder], (E) dataArray[placeHolder + 1]) > 0) {
+
+				tempData = (E) dataArray[placeHolder];
+				dataArray[placeHolder] = dataArray[placeHolder + 1];
+				dataArray[placeHolder + 1] = tempData;
+
+				if (placeHolder > 0) {
+					placeHolder--;
+				}
+			}
+		}
+
+		arrayToList();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -241,6 +261,32 @@ public class MyLinkedList<E> implements List211<E> {
 		return tempData;
 	}
 
+	@SuppressWarnings("unchecked")
+	public void selectionSort(Comparator<? super E> comp) {
+
+		makeArray();
+
+		for (int i = 0; i < size - 1; i++) {
+
+			tempData = (E) dataArray[i];
+			placeHolder = i;
+
+			for (int j = i; j < size; j++) {
+
+				if (comp.compare(tempData, (E) dataArray[j]) > 0) {
+
+					tempData = (E) dataArray[j];
+					placeHolder = j;
+				}
+			}
+
+			dataArray[placeHolder] = dataArray[i];
+			dataArray[i] = tempData;
+		}
+
+		arrayToList();
+	}
+
 	@Override
 	public E set(int index, E e) {
 
@@ -258,7 +304,7 @@ public class MyLinkedList<E> implements List211<E> {
 		temp.data = e;
 		return tempData;
 	}
-	
+
 	@Override
 	public int size() {
 

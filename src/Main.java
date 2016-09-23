@@ -38,5 +38,11 @@ public class Main {
 		for (int i = 0; i < testList[2].size(); i++) {
 			System.out.println(testList[2].get(i));
 		}
+
+		System.out.println(testList[2].indexOf(new Integer(18)));
+
+		System.out.println("\n" + "TestList[1] has a cycle: " + testList[1].hasCycle());
+		testList[1].addCycle(1);
+		System.out.println("\n" + "TestList[1] has a cycle: " + testList[1].hasCycle());
 	}
 }
