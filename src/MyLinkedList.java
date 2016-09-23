@@ -35,9 +35,9 @@ public class MyLinkedList<E> implements List211<E> {
 
       placeHolder = i;
 
-      while (comp.compare((E)dataArray[placeHolder], (E)dataArray[placeHolder + 1]) > 0) {
+      while (comp.compare((E) dataArray[placeHolder], (E) dataArray[placeHolder + 1]) > 0) {
 
-        tempData = (E)dataArray[placeHolder];
+        tempData = (E) dataArray[placeHolder];
         dataArray[placeHolder] = dataArray[placeHolder + 1];
         dataArray[placeHolder + 1] = tempData;
 
@@ -82,14 +82,14 @@ public class MyLinkedList<E> implements List211<E> {
 
     for (int i = 0; i < size - 1; i++) {
 
-      tempData = (E)dataArray[i];
+      tempData = (E) dataArray[i];
       placeHolder = i;
 
       for (int j = i; j < size; j++) {
 
-        if (comp.compare(tempData, (E)dataArray[j]) > 0) {
+        if (comp.compare(tempData, (E) dataArray[j]) > 0) {
 
-          tempData = (E)dataArray[j];
+          tempData = (E) dataArray[j];
           placeHolder = j;
         }
       }
@@ -139,7 +139,7 @@ public class MyLinkedList<E> implements List211<E> {
         head = n;
         tail = n;
       }
-      else{
+      else {
 
         head.prev = n;
         n.next = head;
@@ -160,7 +160,7 @@ public class MyLinkedList<E> implements List211<E> {
       temp.prev = n;
       n.prev.next = n;
       size++;
-    }    
+    }
   }
 
 
@@ -186,16 +186,16 @@ public class MyLinkedList<E> implements List211<E> {
 
     return temp.data;
   }
-  
-  
-  public E[] makeArray(){
+
+
+  public E[] makeArray() {
     dataArray = new Object[size];
     temp = head;
-    for(int i = 0; i < size; i ++){
+    for (int i = 0; i < size; i++) {
       dataArray[i] = temp.data;
       temp = temp.next;
     }
-    return (E[])dataArray;
+    return (E[]) dataArray;
   }
 
 
