@@ -9,73 +9,66 @@ public class MyLinkedList<E> implements List211<E> {
   private E tempData;
   private int placeHolder;
   private int size = 0;
+  private Object[] dataArray;
 
 
-  MyLinkedList(){
+  MyLinkedList() {
 
   }
 
-  private class DLinkedNode<E>{
-
+  private class DLinkedNode<E> {
 
     private E data = null;
     private DLinkedNode<E> next = null;
     private DLinkedNode<E> prev = null;
 
-    DLinkedNode(E data){
+
+    DLinkedNode(E data) {
       this.data = data;
-    } 
+    }
   }
 
 
-  public void insertionSort(Comparator<? super E> compare){
+  public void insertionSort(Comparator<? super E> comp) {
 
-
-    temp = head;
-    
     for (int i = 0; i < size - 1; i++) {
-      
-      temp = temp.next;
 
-      while (compare.compare(temp.prev.data, temp.data) > 0) {
+      placeHolder = i;
 
-        temp.next.prev = temp.prev;
-        temp.prev.next = temp.next;
-        temp.next = temp.prev;
-        temp.prev.prev.next = temp;
-        temp.prev = temp.prev.prev;
-        temp.next.prev = temp;
+      while (comp.compare((E)dataArray[placeHolder], (E)dataArray[placeHolder + 1]) > 0) {
 
-        if (temp.prev.prev != null && !temp.prev.prev.equals(tail)) {
-          temp = temp.prev;
+        tempData = (E)dataArray[placeHolder];
+        dataArray[placeHolder] = dataArray[placeHolder + 1];
+        dataArray[placeHolder + 1] = tempData;
+
+        if (placeHolder > 0) {
+          placeHolder--;
         }
       }
     }
   }
 
 
-  public void bubbleSort(Comparator<? super E> compare){
+  public void bubbleSort(Comparator<? super E> comp) {
 
     for (int i = 0; i < size - 1; i++) {
 
       finished = true;
       temp = head;
-      
+
       for (int j = 0; j < size - 1 - i; j++) {
-        temp = temp.next;
-        
-        if (compare.compare(temp.prev.data, temp.data) > 0) {
+
+        if (comp.compare(temp.data, temp.next.data) > 0) {
 
           finished = false;
-          
-          temp.next.prev = temp.prev;
-          temp.prev.next = temp.next;
-          temp.next = temp.prev;
-          temp.prev.prev.next = temp;
-          temp.prev = temp.prev.prev;
-          temp.next.prev = temp;
-          
+
+          tempData = temp.data;
+          temp.data = temp.next.data;
+          temp.next.data = tempData;
+
         }
+
+        temp = temp.next;
       }
 
       if (finished == true) {
@@ -85,42 +78,24 @@ public class MyLinkedList<E> implements List211<E> {
   }
 
 
-  public void selectionSort(Comparator<? super E> compare){
-
-    DLinkedNode<E>[] data = new DLinkedNode[size];
-    
-    temp = head;
-    for(int d = 0; d < size; d ++){
-     
-      data[d] = temp;
-      temp = temp.next;
-    }
-    
-    
+  public void selectionSort(Comparator<? super E> comp) {
 
     for (int i = 0; i < size - 1; i++) {
 
-      temp = data[i];
+      tempData = (E)dataArray[i];
       placeHolder = i;
 
       for (int j = i; j < size; j++) {
 
-        if (compare.compare(temp.data, (E)data[j].data) > 0) {
+        if (comp.compare(tempData, (E)dataArray[j]) > 0) {
 
-          temp = data[j];
+          tempData = (E)dataArray[j];
           placeHolder = j;
         }
       }
 
-      data[placeHolder] = data[i];
-      data[i] = temp;
-    }
-    
-    temp = head;
-    
-    for(int i = 0; i < size; i ++){
-    	temp.data = (E)data[i].data;
-    	temp = temp.next;
+      dataArray[placeHolder] = dataArray[i];
+      dataArray[i] = tempData;
     }
   }
 
@@ -130,17 +105,17 @@ public class MyLinkedList<E> implements List211<E> {
 
     DLinkedNode<E> n = new DLinkedNode<E>(e);
 
-    if (size == 0){
-      head = n;  
+    if (size == 0) {
+      head = n;
+      tail = n;
     }
+    else {
 
-    n.next = tail.next;
-    n.prev = tail;
-    tail.next = n;
-    tail = n;
-    
-    
-    size ++;
+      n.prev = tail;
+      tail.next = n;
+      tail = n;
+    }
+    size++;
 
     return true;
   }
@@ -149,34 +124,55 @@ public class MyLinkedList<E> implements List211<E> {
   @Override
   public void add(int index, E e) {
 
-    checkIndex(index);
+    if (index < 0 || index > size) {
+
+      throw new IndexOutOfBoundsException();
+    }
 
     DLinkedNode<E> n = new DLinkedNode<E>(e);
 
-    temp = head;
-    
-    for(int i = 0; i < index; i ++){
-      temp = temp.next;
+    if (index == size) {
+      add(e);
     }
+    else if (index == 0) {
+      if (size == 0) {
+        head = n;
+        tail = n;
+      }
+      else{
 
-    n.prev = temp.prev;
-    n.next = temp;
-    n.prev.next = n;
-    n.next.prev = n;    
+        head.prev = n;
+        n.next = head;
+        head = n;
+      }
+      size++;
+    }
+    else {
 
-    size ++;
+      temp = head;
+
+      for (int i = 0; i < index; i++) {
+        temp = temp.next;
+      }
+
+      n.prev = temp.prev;
+      n.next = temp;
+      temp.prev = n;
+      n.prev.next = n;
+      size++;
+    }    
   }
 
 
-  public void checkIndex(int index){
-    
-    if(index < 0 || index >= size){
-      
+  public void checkIndex(int index) {
+
+    if (index < 0 || index >= size) {
+
       throw new IndexOutOfBoundsException();
     }
   }
 
-  
+
   @Override
   public E get(int index) {
 
@@ -184,11 +180,22 @@ public class MyLinkedList<E> implements List211<E> {
 
     temp = head;
 
-    for(int i = 0; i < index; i ++){
-      temp = temp.next;  
+    for (int i = 0; i < index; i++) {
+      temp = temp.next;
     }
 
     return temp.data;
+  }
+  
+  
+  public E[] makeArray(){
+    dataArray = new Object[size];
+    temp = head;
+    for(int i = 0; i < size; i ++){
+      dataArray[i] = temp.data;
+      temp = temp.next;
+    }
+    return (E[])dataArray;
   }
 
 
@@ -197,16 +204,29 @@ public class MyLinkedList<E> implements List211<E> {
 
     checkIndex(index);
 
-    temp = head;
-
-    for(int i = 0; i < index; i ++){
-      temp = temp.next;
+    if (index == 0) {
+      head = head.next;
+      head.prev = null;
     }
-    tempData = temp.data;
-    temp.next.prev = temp.prev;
-    temp.prev.next = temp.next;
+    else if (index == size - 1) {
+      tail = tail.prev;
+      tail.next = null;
+    }
 
-    size --;
+    else {
+
+      temp = head;
+
+      for (int i = 0; i < index; i++) {
+        temp = temp.next;
+      }
+
+      tempData = temp.data;
+      temp.next.prev = temp.prev;
+      temp.prev.next = temp.next;
+    }
+
+    size--;
     return tempData;
   }
 
@@ -218,15 +238,15 @@ public class MyLinkedList<E> implements List211<E> {
 
     temp = head;
 
-    for(int i = 0; i < index; i ++){
+    for (int i = 0; i < index; i++) {
 
-      temp = temp.next;  
+      temp = temp.next;
     }
-    
+
     tempData = temp.data;
 
     temp.data = e;
-        return tempData;
+    return tempData;
   }
 
 

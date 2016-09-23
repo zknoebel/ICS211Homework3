@@ -107,6 +107,7 @@ public class MyLinkedListTest {
             assertEquals(new Integer(i), ial.get(i));
         }
 
+
         // Test boundaries (add at index 0 and the very end).  Array list
         // should contain [-1, 0, 2, 3, ..., MAX]
         ial.add(0, -1);
@@ -169,7 +170,7 @@ public class MyLinkedListTest {
          *  Should have a list containing [1, 2, 3, ..., MAX-2] with a size == MAX-2
          */
 
-        // Remove middle element and check...
+        // Remove middle element and check...        
         assertEquals(new Integer(2), ial.remove(1));
         assertEquals(new Integer(1), ial.get(0));
         assertEquals(new Integer(3), ial.get(1));
