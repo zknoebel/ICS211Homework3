@@ -70,7 +70,11 @@ public interface List211<E> {
    * @return The number of elements in the list.
    */
   int size();
-
+  
+  /**
+   * Returns the index at which the given object is stored. If it is not in the list, then returns -1.
+   */
+  int indexOf(Object obj);
 
   /**
    * Sorts list with insertions sort.
