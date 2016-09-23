@@ -2,258 +2,267 @@ import java.util.Comparator;
 
 public class MyLinkedList<E> implements List211<E> {
 
-  private boolean finished;
-  private DLinkedNode<E> head;
-  private DLinkedNode<E> tail;
-  private DLinkedNode<E> temp;
-  private E tempData;
-  private int placeHolder;
-  private int size = 0;
-  private Object[] dataArray;
+	private boolean finished;
+	private DLinkedNode<E> head;
+	private DLinkedNode<E> tail;
+	private DLinkedNode<E> temp;
+	private E tempData;
+	private int placeHolder;
+	private int size = 0;
+	private Object[] dataArray;
 
+	MyLinkedList() {
 
-  MyLinkedList() {
+	}
 
-  }
+	@SuppressWarnings("hiding")
+	private class DLinkedNode<E> {
 
-  private class DLinkedNode<E> {
+		private E data = null;
+		private DLinkedNode<E> next = null;
+		private DLinkedNode<E> prev = null;
 
-    private E data = null;
-    private DLinkedNode<E> next = null;
-    private DLinkedNode<E> prev = null;
+		DLinkedNode(E data) {
+			this.data = data;
+		}
+	}
 
+	@SuppressWarnings("unchecked")
+	public void insertionSort(Comparator<? super E> comp) {
 
-    DLinkedNode(E data) {
-      this.data = data;
-    }
-  }
+		makeArray();
 
+		for (int i = 0; i < size - 1; i++) {
 
-  public void insertionSort(Comparator<? super E> comp) {
+			placeHolder = i;
 
-    for (int i = 0; i < size - 1; i++) {
+			while (comp.compare((E) dataArray[placeHolder], (E) dataArray[placeHolder + 1]) > 0) {
 
-      placeHolder = i;
+				tempData = (E) dataArray[placeHolder];
+				dataArray[placeHolder] = dataArray[placeHolder + 1];
+				dataArray[placeHolder + 1] = tempData;
 
-      while (comp.compare((E) dataArray[placeHolder], (E) dataArray[placeHolder + 1]) > 0) {
+				if (placeHolder > 0) {
+					placeHolder--;
+				}
+			}
+		}
+		
+		arrayToList();
+	}
 
-        tempData = (E) dataArray[placeHolder];
-        dataArray[placeHolder] = dataArray[placeHolder + 1];
-        dataArray[placeHolder + 1] = tempData;
+	public void bubbleSort(Comparator<? super E> comp) {
 
-        if (placeHolder > 0) {
-          placeHolder--;
-        }
-      }
-    }
-  }
+		for (int i = 0; i < size - 1; i++) {
 
+			finished = true;
+			temp = head;
 
-  public void bubbleSort(Comparator<? super E> comp) {
+			for (int j = 0; j < size - 1 - i; j++) {
 
-    for (int i = 0; i < size - 1; i++) {
+				if (comp.compare(temp.data, temp.next.data) > 0) {
 
-      finished = true;
-      temp = head;
+					finished = false;
 
-      for (int j = 0; j < size - 1 - i; j++) {
+					tempData = temp.data;
+					temp.data = temp.next.data;
+					temp.next.data = tempData;
 
-        if (comp.compare(temp.data, temp.next.data) > 0) {
+				}
 
-          finished = false;
+				temp = temp.next;
+			}
 
-          tempData = temp.data;
-          temp.data = temp.next.data;
-          temp.next.data = tempData;
+			if (finished == true) {
+				break;
+			}
+		}
+	}
 
-        }
+	@SuppressWarnings("unchecked")
+	public void selectionSort(Comparator<? super E> comp) {
 
-        temp = temp.next;
-      }
+		makeArray();
 
-      if (finished == true) {
-        break;
-      }
-    }
-  }
+		for (int i = 0; i < size - 1; i++) {
 
+			tempData = (E) dataArray[i];
+			placeHolder = i;
 
-  public void selectionSort(Comparator<? super E> comp) {
+			for (int j = i; j < size; j++) {
 
-    for (int i = 0; i < size - 1; i++) {
+				if (comp.compare(tempData, (E) dataArray[j]) > 0) {
 
-      tempData = (E) dataArray[i];
-      placeHolder = i;
+					tempData = (E) dataArray[j];
+					placeHolder = j;
+				}
+			}
 
-      for (int j = i; j < size; j++) {
+			dataArray[placeHolder] = dataArray[i];
+			dataArray[i] = tempData;
+		}
+		
+		arrayToList();
+	}
 
-        if (comp.compare(tempData, (E) dataArray[j]) > 0) {
+	@Override
+	public boolean add(E e) {
+
+		DLinkedNode<E> n = new DLinkedNode<E>(e);
 
-          tempData = (E) dataArray[j];
-          placeHolder = j;
-        }
-      }
+		if (size == 0) {
+			head = n;
+			tail = n;
+		} else {
 
-      dataArray[placeHolder] = dataArray[i];
-      dataArray[i] = tempData;
-    }
-  }
+			n.prev = tail;
+			tail.next = n;
+			tail = n;
+		}
+		size++;
 
+		return true;
+	}
+
+	@Override
+	public void add(int index, E e) {
 
-  @Override
-  public boolean add(E e) {
+		if (index < 0 || index > size) {
 
-    DLinkedNode<E> n = new DLinkedNode<E>(e);
+			throw new IndexOutOfBoundsException();
+		}
 
-    if (size == 0) {
-      head = n;
-      tail = n;
-    }
-    else {
+		DLinkedNode<E> n = new DLinkedNode<E>(e);
 
-      n.prev = tail;
-      tail.next = n;
-      tail = n;
-    }
-    size++;
+		if (index == size) {
+			add(e);
+		} else if (index == 0) {
+			if (size == 0) {
+				head = n;
+				tail = n;
+			} else {
 
-    return true;
-  }
+				head.prev = n;
+				n.next = head;
+				head = n;
+			}
+			size++;
+		} else {
 
+			temp = head;
 
-  @Override
-  public void add(int index, E e) {
+			for (int i = 0; i < index; i++) {
+				temp = temp.next;
+			}
 
-    if (index < 0 || index > size) {
+			n.prev = temp.prev;
+			n.next = temp;
+			temp.prev = n;
+			n.prev.next = n;
+			size++;
+		}
+	}
 
-      throw new IndexOutOfBoundsException();
-    }
+	@SuppressWarnings("unchecked")
+	private void arrayToList(){
+		
+		temp = head;
+		
+		for(int i = 0; i < size; i++){
+			temp.data = (E)dataArray[i];
+			temp = temp.next;
+		}
+	}
+	
+	public void checkIndex(int index) {
 
-    DLinkedNode<E> n = new DLinkedNode<E>(e);
+		if (index < 0 || index >= size) {
 
-    if (index == size) {
-      add(e);
-    }
-    else if (index == 0) {
-      if (size == 0) {
-        head = n;
-        tail = n;
-      }
-      else {
+			throw new IndexOutOfBoundsException();
+		}
+	}
 
-        head.prev = n;
-        n.next = head;
-        head = n;
-      }
-      size++;
-    }
-    else {
+	@Override
+	public E get(int index) {
 
-      temp = head;
+		checkIndex(index);
 
-      for (int i = 0; i < index; i++) {
-        temp = temp.next;
-      }
+		temp = head;
 
-      n.prev = temp.prev;
-      n.next = temp;
-      temp.prev = n;
-      n.prev.next = n;
-      size++;
-    }
-  }
+		for (int i = 0; i < index; i++) {
+			temp = temp.next;
+		}
 
+		return temp.data;
+	}
 
-  public void checkIndex(int index) {
+	@SuppressWarnings("unchecked")
+	private E[] makeArray() {
 
-    if (index < 0 || index >= size) {
+		dataArray = new Object[size];
+		temp = head;
 
-      throw new IndexOutOfBoundsException();
-    }
-  }
+		for (int i = 0; i < size; i++) {
 
+			dataArray[i] = temp.data;
+			temp = temp.next;
+		}
 
-  @Override
-  public E get(int index) {
+		return (E[]) dataArray;
+	}
 
-    checkIndex(index);
+	@Override
+	public E remove(int index) {
 
-    temp = head;
+		checkIndex(index);
 
-    for (int i = 0; i < index; i++) {
-      temp = temp.next;
-    }
+		if (index == 0) {
+			head = head.next;
+			head.prev = null;
+		} else if (index == size - 1) {
+			tail = tail.prev;
+			tail.next = null;
+		}
 
-    return temp.data;
-  }
+		else {
 
+			temp = head;
 
-  public E[] makeArray() {
-    dataArray = new Object[size];
-    temp = head;
-    for (int i = 0; i < size; i++) {
-      dataArray[i] = temp.data;
-      temp = temp.next;
-    }
-    return (E[]) dataArray;
-  }
+			for (int i = 0; i < index; i++) {
+				temp = temp.next;
+			}
 
+			tempData = temp.data;
+			temp.next.prev = temp.prev;
+			temp.prev.next = temp.next;
+		}
 
-  @Override
-  public E remove(int index) {
+		size--;
+		return tempData;
+	}
 
-    checkIndex(index);
+	@Override
+	public E set(int index, E e) {
 
-    if (index == 0) {
-      head = head.next;
-      head.prev = null;
-    }
-    else if (index == size - 1) {
-      tail = tail.prev;
-      tail.next = null;
-    }
+		checkIndex(index);
 
-    else {
+		temp = head;
 
-      temp = head;
+		for (int i = 0; i < index; i++) {
 
-      for (int i = 0; i < index; i++) {
-        temp = temp.next;
-      }
+			temp = temp.next;
+		}
 
-      tempData = temp.data;
-      temp.next.prev = temp.prev;
-      temp.prev.next = temp.next;
-    }
+		tempData = temp.data;
 
-    size--;
-    return tempData;
-  }
+		temp.data = e;
+		return tempData;
+	}
+	
+	@Override
+	public int size() {
 
-
-  @Override
-  public E set(int index, E e) {
-
-    checkIndex(index);
-
-    temp = head;
-
-    for (int i = 0; i < index; i++) {
-
-      temp = temp.next;
-    }
-
-    tempData = temp.data;
-
-    temp.data = e;
-    return tempData;
-  }
-
-
-  @Override
-  public int size() {
-
-    return size;
-  }
+		return size;
+	}
 
 }
