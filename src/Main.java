@@ -63,6 +63,7 @@ public class Main {
 		for (int i = 0; i < testList[2].size(); i++) {
 			System.out.println(testList[2].get(i));
 		}
+		
 
 		System.out.println(testList[2].indexOf(new Integer(18)));
 
