@@ -1,6 +1,18 @@
+/**
+ * 
+ * Main
+ *
+ * @author Zachery Knoebel
+ *
+ */
 
 public class Main {
 
+  /**
+   * This class is used to test the updated or newly created classes in this package.
+   * 
+   * @param args
+   */
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 
@@ -12,21 +24,34 @@ public class Main {
 		testList[1] = new MyLinkedList<Integer>();
 		testList[2] = new MyLinkedList<Integer>();
 
+		/**
+		 * tests the add method used without an index
+		 * creates three linked lists to be tested
+		 */
 		for (int i = listLength; i > 0; i--) {
 			testList[0].add(i);
 			testList[1].add(i);
 			testList[2].add(i);
 		}
 
+		/**
+		 * tests the three sort methods
+		 */
 		testList[0].bubbleSort(comp);
 		testList[1].insertionSort(comp);
 		testList[2].selectionSort(comp);
 
+		/**
+		 * tests the remove and add at index methods
+		 */
 		testList[0].remove(0);
 		testList[0].remove(testList[0].size() - 1);
 		testList[0].remove(7);
 		testList[0].add(9, 999);
 
+		/**
+		 * prints the three linked lists
+		 */
 		for (int i = 0; i < testList[0].size(); i++) {
 			System.out.println(testList[0].get(i));
 		}
