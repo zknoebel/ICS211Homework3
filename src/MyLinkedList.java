@@ -1,7 +1,28 @@
+/**
+ * used for sorting methods
+ */
 import java.util.Comparator;
 
+/**
+ * 
+ * MyLinkedList
+ *
+ * @author Zachery Knoebel
+ *
+ * @param <E> the data conatined by the node
+ */
 public class MyLinkedList<E> implements List211<E> {
 
+  /**
+   * @param finished: used to keep bubbleSort from running on a sorted list
+   * @param head: points to the beginning of the linkedList
+   * @param tail: points to the end of the linkedList
+   * @param temp: used to traverse the linkedList
+   * @param tempData: temporarily stores data from the DLinkedNode data variables
+   * @param placeHolder: used in sorts
+   * @param size: the length of the linkedList
+   * @param dataArray: holds an array of the data variables from the linkedList nodes
+   */
 	private boolean finished;
 	private DLinkedNode<E> head;
 	private DLinkedNode<E> tail;
@@ -15,6 +36,16 @@ public class MyLinkedList<E> implements List211<E> {
 
 	}
 
+	/**
+	 * 
+	 * DLinkedNode
+	 *
+	 * @author Zachery Knoebel
+	 *
+	 * @param <E> data variable
+	 * 
+	 * creates a node that holds an object and can point to the next and previous node in the list
+	 */
 	@SuppressWarnings("hiding")
 	private class DLinkedNode<E> {
 
@@ -27,6 +58,9 @@ public class MyLinkedList<E> implements List211<E> {
 		}
 	}
 
+	/**
+	 * adds a node with data 'e' to the end of the list
+	 */
 	@Override
 	public boolean add(E e) {
 
@@ -46,6 +80,9 @@ public class MyLinkedList<E> implements List211<E> {
 		return true;
 	}
 
+	/**
+	 * adds a node wiht data 'e' to the index location
+	 */
 	@Override
 	public void add(int index, E e) {
 
@@ -85,6 +122,11 @@ public class MyLinkedList<E> implements List211<E> {
 		}
 	}
 
+	/**
+	 * adds a cycle to the list for testing purposes
+	 * 
+	 * @param cycleTo: cycles from the end of the list to the position indicated by cycleTo
+	 */
 	public void addCycle(int cycleTo) {
 
 		temp = head;
@@ -95,6 +137,10 @@ public class MyLinkedList<E> implements List211<E> {
 		tail.next = temp;
 	}
 
+	/**
+	 * inserts data values in dataArray into the data variables in the DLinkedNodes
+	 * this is done so the previously made array sorting methods could be implemented with few changes
+	 */
 	@SuppressWarnings("unchecked")
 	private void arrayToList() {
 
@@ -106,6 +152,9 @@ public class MyLinkedList<E> implements List211<E> {
 		}
 	}
 
+	/**
+	 * uses bubbleSort method on DLinkedList
+	 */
 	public void bubbleSort(Comparator<? super E> comp) {
 
 		for (int i = 0; i < size - 1; i++) {
@@ -134,6 +183,9 @@ public class MyLinkedList<E> implements List211<E> {
 		}
 	}
 
+	/**
+	 * checks to make sure the index is within the bounds of the LinkedList
+	 */
 	public void checkIndex(int index) {
 
 		if (index < 0 || index >= size) {
@@ -142,6 +194,9 @@ public class MyLinkedList<E> implements List211<E> {
 		}
 	}
 
+	/**
+	 * returns data from the DLinkedNode at index
+	 */
 	@Override
 	public E get(int index) {
 
@@ -156,6 +211,9 @@ public class MyLinkedList<E> implements List211<E> {
 		return temp.data;
 	}
 
+	/**
+	 * checks to see if there is a cycle within the DLinkedList
+	 */
 	public boolean hasCycle() {
 
 		DLinkedNode<E> tortoise = head;
@@ -177,6 +235,10 @@ public class MyLinkedList<E> implements List211<E> {
 
 	}
 
+	/**
+	 * returns the index of the object obj
+	 * if obj is not in the linkedList then it returns -1
+	 */
 	public int indexOf(Object obj) {
 
 		temp = head;
@@ -192,6 +254,9 @@ public class MyLinkedList<E> implements List211<E> {
 		return -1;
 	}
 
+	/**
+	 * preforms an insertionSort on the DLinkedList
+	 */
 	@SuppressWarnings("unchecked")
 	public void insertionSort(Comparator<? super E> comp) {
 
@@ -216,6 +281,10 @@ public class MyLinkedList<E> implements List211<E> {
 		arrayToList();
 	}
 
+	/**
+	 * used to make an array of data from the data in the DlinkedNodes
+   * this is done so the previously made array sorting methods could be implemented with few changes
+	 */
 	@SuppressWarnings("unchecked")
 	private E[] makeArray() {
 
@@ -231,6 +300,9 @@ public class MyLinkedList<E> implements List211<E> {
 		return (E[]) dataArray;
 	}
 
+	/**
+	 * removes a DLinkedNode from the list at index by changing the previous and next pointers of the nodes that point to it
+	 */
 	@Override
 	public E remove(int index) {
 
@@ -261,6 +333,9 @@ public class MyLinkedList<E> implements List211<E> {
 		return tempData;
 	}
 
+	/**
+	 * uses a selectionSort on the DLinkedList
+	 */
 	@SuppressWarnings("unchecked")
 	public void selectionSort(Comparator<? super E> comp) {
 
@@ -286,7 +361,9 @@ public class MyLinkedList<E> implements List211<E> {
 
 		arrayToList();
 	}
-
+/**
+ * changes data value at index to 'e'
+ */
 	@Override
 	public E set(int index, E e) {
 
@@ -305,6 +382,9 @@ public class MyLinkedList<E> implements List211<E> {
 		return tempData;
 	}
 
+	/**
+	 * returns the length of the DLinkedList
+	 */
 	@Override
 	public int size() {
 
